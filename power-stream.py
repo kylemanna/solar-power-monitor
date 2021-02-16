@@ -118,9 +118,10 @@ class SolarPower():
         ch = ch_dict['ch']
         gain = ch_dict['gain']
         d = { 'v_load':  self._ina3221.get_voltage(ch, 'bus'),
-              'v_shunt': self._ina3221.get_voltage(ch, 'shunt'),
               'current': self._ina3221.get_current(ch) / 1000 * gain
             }
+        # Not sure how this is useful:
+        #'v_shunt': self._ina3221.get_voltage(ch, 'shunt')
         return d
 
     def _sample_cb(self):

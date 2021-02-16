@@ -1,0 +1,9 @@
+{
+  "name": "raspberrypi",
+  "influx": {
+    "database": "test",
+    "host": "influxdb",
+    "password": "SecretPassword",
+    "username": "pi"
+  }
+}

@@ -6,6 +6,7 @@ import sched
 import smbus
 import time
 import struct
+import sys
 
 
 class INA3221():
@@ -164,10 +165,15 @@ class SolarPower():
 
 
 if __name__ == '__main__':
+    import argparse
 
     s = sched.scheduler()
 
-    sp = SolarPower(s, mean_period_cnt=30)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--period_cnt", help="period to summarize and emit", type=int, default=30)
+    args = parser.parse_args()
+
+    sp = SolarPower(s, mean_period_cnt=args.period_cnt)
     sp.start()
 
     s.run()

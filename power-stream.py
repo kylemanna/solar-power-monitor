@@ -125,10 +125,22 @@ class SolarPower():
         #'v_shunt': self._ina3221.get_voltage(ch, 'shunt')
         return d
 
+    def _get_system(self):
+        d = {}
+        try:
+            with open('/sys/class/hwmon/hwmon0/temp1_input', 'r') as fp:
+                # Get cpu temp in milli-degrees and convert to degrees
+                d['cpu_temp'] = int(fp.read().strip())/1000.0
+        except Exception as e:
+            print(f"Failed to read CPU temp {e}", file=sys.stderr)
+
+        return d
+
     def _sample_cb(self):
         d = { k: self._read_channel(v) for k, v in self._CH_LUT.items() }
         d['@machine_id'] = self._machine_id
         d['@time'] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')
+        d['system'] = self._get_system()
 
         #print(json.dumps(d))
         #print(json.dumps({'sample': d['@time']}))

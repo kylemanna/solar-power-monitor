@@ -1,0 +1,16 @@
+[Unit]
+Description=Solar Power Monitor Service
+After=network.target
+
+[Service]
+#User=user1
+#WorkingDirectory=/home/user1/solar-power-monitor
+ExecStart=/bin/sh -c 'ssh -o ServerAliveInterval=60 rpi1 python3 -u - < power-stream.py | python3 -u bridge-influx.py'
+SyslogIdentifier=%N
+
+# Restart every >2 seconds to avoid StartLimitInterval failure
+RestartSec=3
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
